@@ -15,11 +15,18 @@ async function create(hotel) {
 }
 
 async function update(id, hotel) {
+    const existing = await Hotel.findById(id);
     
+    existing.name = hotel.name;
+    existing.city = hotel.city;
+    existing.imageUrl = hotel.imageUrl;
+    existing.rooms = hotel.rooms;
+
+    await existing.save();
 }
 
 async function deleteById(id) {
-    
+
 }
 
 async function bookRoom(id, userId) {
