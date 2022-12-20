@@ -1,10 +1,14 @@
+const { getAll } = require('../services/hotelService');
+
 const homeController = require('express').Router();
 
 //TODO replace with assignment
-homeController.get('/', (req, res) => {
+homeController.get('/', async (req, res) => {
+    const hotels = await getAll();
     res.render('home', {
         title: 'Home',
-        user: req.user
+        // user: req.user,
+        hotels
     });
 });
 
