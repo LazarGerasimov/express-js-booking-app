@@ -23,7 +23,11 @@ hotelController.post('/create', async (req, res) => {
         rooms: Number(req.body.rooms),
         owner: req.user._id
     };
+
     try {
+        if (Object.values(hotel).some(v => !v)) {
+            throw new Error('All fields are required');
+        }
         await create(hotel);
         res.redirect('/');
     } catch (err) {
