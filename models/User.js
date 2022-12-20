@@ -2,7 +2,8 @@ const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
     //TODO add User validation per asignment
-    username: { type: String, required: true, unique: true, minlength: [3, 'Username must be at least 3 chars long'] },
+    username: { type: String, required: true, unique: true, match: [/^[a-zA-Z0-9]+$/i, 'Username may only contain english letters and numbers'] },
+    email: { type: String, required: true, unique: true },
     hashedPassword: { type: String, required: true }
 });
 
@@ -11,7 +12,14 @@ userSchema.index({ username: 1 }, {  // allows setting unique in the Schema
         locale: 'en',
         strength: 2
     }
-})
+});
+
+userSchema.index({ email: 1 }, {  // allows setting unique in the Schema
+    collation: {
+        locale: 'en',
+        strength: 2
+    }
+});
 
 const User = model('User', userSchema);
 
