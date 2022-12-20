@@ -1,3 +1,4 @@
+const Hotel = require("../models/Hotel");
 
 
 
@@ -10,7 +11,7 @@ async function getById(id) {
 }
 
 async function create(hotel) {
-    
+    return await Hotel.create(hotel);
 }
 
 async function update(id, hotel) {
