@@ -16,7 +16,7 @@ async function create(hotel) {
 
 async function update(id, hotel) {
     const existing = await Hotel.findById(id);
-    
+
     existing.name = hotel.name;
     existing.city = hotel.city;
     existing.imageUrl = hotel.imageUrl;
@@ -40,6 +40,10 @@ async function bookRoom(hotelId, userId) {
     await hotel.save();
 }
 
+async function getByUserBooking(userId) {
+    return Hotel.find({ bookings: userId }).lean();
+}
+
 
 
 module.exports = {
@@ -48,5 +52,6 @@ module.exports = {
     create,
     update,
     deleteById,
-    bookRoom
+    bookRoom,
+    getByUserBooking
 }
