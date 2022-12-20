@@ -26,7 +26,7 @@ async function update(id, hotel) {
 }
 
 async function deleteById(id) {
-
+    await Hotel.findByIdAndRemove(id);
 }
 
 async function bookRoom(id, userId) {
