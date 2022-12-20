@@ -1,0 +1,15 @@
+<h1>Login Page</h1>
+{{!-- {{#if error}}
+<div>
+    {{#each errors}}
+    <p>{{this}}</p>
+    {{/each}}
+</div>
+{{/if}} 
+                        check if errors are applied globally
+--}}
+<form method="post" action="/auth/login">
+<label>Username: <input type="text" name="username" value="{{body.username}}"></label>
+<label>Password: <input type="text" name="password"></label>
+<button>Login</button>
+</form>
