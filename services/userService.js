@@ -5,13 +5,18 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'The most secret secret';
 
 //TODO replace with assignment (email if needed);
-async function register(username, password) {
-    const existing = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
-    if (existing) {
+async function register(email, username, password) {
+    const existingUsername = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+    if (existingUsername) {
         throw new Error('Username is taken');
+    }
+    const existingEmail = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
+    if (existingEmail) {
+        throw new Error('Email is taken');
     }
     const hashedPassword = await bcrypt.hash(password, 10); // salt as second param
     const user = await User.create({
+        email,
         username,
         hashedPassword
     });
@@ -21,14 +26,14 @@ async function register(username, password) {
 }
 
 //TODO replace with asignment (email if needed);
-async function login(username, password) {
-    const user = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
+async function login(email, password) {
+    const user = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });  
     if (!user) {
-        throw new Error('Incorrect username or password');
+        throw new Error('Incorrect email or password');
     };
     const hasMatch = await bcrypt.compare(password, user.hashedPassword);
-    if (!hasMatch == false) {
-        throw new Error('Incorrect username or password');
+    if (!hasMatch) {
+        throw new Error('Incorrect email or password');
     }
     return createSession(user);
 
@@ -36,7 +41,8 @@ async function login(username, password) {
 //TODO check assingment 
 function createSession(user) {   // create payload for cookie or has to manually log in
     const payload = {
-        _id: user._id,
+        _id: user._id, 
+        email: user.email,
         username: user.username,
     };
     return jwt.sign(payload, JWT_SECRET);
